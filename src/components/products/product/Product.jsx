@@ -12,6 +12,14 @@ import useStyles from "./styles";
 
 const Product = ({ product, onAddToCart }) => {
   const classes = useStyles();
+
+  // const handleAddToCart = () => {
+  //   onAddToCart(product.id, 1);
+  // };
+  // const handleAddToCart = () => {
+  //   onAddToCart(product.id, 1);
+
+  // };
   return (
     <Card className={classes.root} style={{ marginTop: "85px" }}>
       <CardMedia
@@ -36,9 +44,9 @@ const Product = ({ product, onAddToCart }) => {
       </CardContent>
       <CardActions disableSpacing className={classes.CardActions}>
         <IconButton
-          aria-label="Add to Cart"
-          // onClick={onAddToCart}
+          aria-label="Add to Cart "
           onClick={() => onAddToCart(product.id, 1)}
+          // onClick={handleAddToCart}
         >
           <AddShoppingCart />
         </IconButton>

@@ -4,7 +4,7 @@ import React from "react";
 // import useStyles from "./styles";
 import { ShoppingCart } from "@mui/icons-material";
 
-const NavBar = () => {
+const NavBar = ({ totalItems }) => {
   // const classes = useStyles();
   return (
     <div>
@@ -37,7 +37,7 @@ const NavBar = () => {
             }}
           >
             <IconButton aria-label="show cart item" color="inherit">
-              <Badge badgeContent={3} color="secondary">
+              <Badge badgeContent={totalItems} color="secondary">
                 <ShoppingCart />
               </Badge>
             </IconButton>

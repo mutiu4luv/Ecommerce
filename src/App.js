@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import './App.css';
+import Cart from './components/cart/Cart';
 import NavBar from './components/products/Navabar/NavBar';
 import Products from './components/products/Products';
 import { commerce } from './lib/Commerce';
@@ -14,14 +15,26 @@ function App() {
     setProducts(data)
   }
 
-  const fetchCart = async () => {
+  // const fetchCart = async () => {
     
-    setCart(await commerce.cart.retrieve())
-  }
+  //   setCart(await commerce.cart.retrieve())
+    
+  // }
+  
+const fetchCart = () => {
+  commerce.cart.retrieve().then((cart) => {
+    setCart(cart);
+  }).catch((error) => {
+    console.log('There was an error fetching the cart', error);
+  });
+
+
+}
 
   const handleAddToCart = async (productId, quantity) => {
     const item = await commerce.cart.add(productId,quantity)
-    setCart(item.cart)
+    // setCart(item.cart)
+    console.log(cart)
   }
   useEffect (() => {
       fetchProducts()
@@ -30,9 +43,10 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
-            <Products products={products} onAddToCart={handleAddToCart } />
-            
+      <NavBar totalItems={cart.total_items}/>
+            {/* <Products products={products} onAddToCart={handleAddToCart } /> */}
+            <Cart cart={cart}/>
+
     </div>
   );
 }
