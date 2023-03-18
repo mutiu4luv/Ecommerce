@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { ThemeProvider,  Theme } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <BrowserRouter>
+  {/* <React.StrictMode> */}
      {/* <ThemeProvider  Theme={ Theme} > */}
     <App />
      {/* </ThemeProvider> */}
-     </React.StrictMode> 
+     {/* </React.StrictMode>  */}
+     </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

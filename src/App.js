@@ -1,5 +1,7 @@
 
+import { Switch } from '@material-ui/core';
 import { useEffect, useState } from 'react';
+import { Route,  Routes } from 'react-router-dom';
 import './App.css';
 import Cart from './components/cart/Cart';
 import NavBar from './components/products/Navabar/NavBar';
@@ -14,28 +16,52 @@ function App() {
     const {data} = await commerce.products.list()
     setProducts(data)
   }
+// if (cart && cart.line_items) {
+// console.log(cart.line_items)
+// }
 
   // const fetchCart = async () => {
     
   //   setCart(await commerce.cart.retrieve())
     
   // }
+
   
 const fetchCart = () => {
   commerce.cart.retrieve().then((cart) => {
     setCart(cart);
   }).catch((error) => {
-    console.log('There was an error fetching the cart', error);
+    // console.log('There was an error fetching the cart', error);
   });
 
 
 }
 
   const handleAddToCart = async (productId, quantity) => {
-    const item = await commerce.cart.add(productId,quantity)
-    // setCart(item.cart)
-    console.log(cart)
+    const {cart} = await commerce.cart.add(productId,quantity)
+    // setCart(cart)
+    fetchCart()
+    // console.log(cart)
   }
+
+  const handleUpdateCartQty = async (productId, quantity) => {
+console.log(productId, quantity)
+    const {cart} = await commerce.cart.update(productId, {quantity})
+    // setCart(cart)
+
+    console.log(cart)
+
+  }
+  const handleRemoveFromCart = async (productId) => {
+    const {cart} = await commerce.cart.remove(productId)
+    // setCart(cart)
+       fetchCart()
+  }
+  const handleEmptyCart = async () => {
+    const {cart} = await commerce.cart.empty()
+  //   setCart(cart)
+       fetchCart()
+}
   useEffect (() => {
       fetchProducts()
        fetchCart()
@@ -43,11 +69,23 @@ const fetchCart = () => {
 
   return (
     <div className="App">
-      <NavBar totalItems={cart.total_items}/>
-            {/* <Products products={products} onAddToCart={handleAddToCart } /> */}
-            <Cart cart={cart}/>
-
-    </div>
+       <NavBar totalItems={cart?.total_items}/>
+       
+    <Routes>
+    
+     
+     <Route path='/' element= { <Products products={products} onAddToCart={handleAddToCart } />} />
+     <Route path='/cart' element= { <Cart
+      cart={cart}
+      handleUpdateCartQty ={handleUpdateCartQty }
+       handleRemoveFromCart ={handleRemoveFromCart }
+       handleEmptyCart ={handleEmptyCart }
+     onAddToCart={handleAddToCart } 
+    //  refetch={fetchCart} 
+      /> } />
+  
+    </Routes> 
+      </div>
   );
 }
 

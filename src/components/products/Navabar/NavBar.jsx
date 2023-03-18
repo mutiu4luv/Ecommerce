@@ -3,9 +3,11 @@ import navbar from "../../../assets/navbar.png";
 import React from "react";
 // import useStyles from "./styles";
 import { ShoppingCart } from "@mui/icons-material";
+import { Link, useLocation } from "react-router-dom";
 
 const NavBar = ({ totalItems }) => {
   // const classes = useStyles();
+  const location = useLocation();
   return (
     <div>
       <AppBar
@@ -16,6 +18,8 @@ const NavBar = ({ totalItems }) => {
       >
         <Toolbar>
           <Typography
+            component={Link}
+            to="/"
             variant="h6"
             // className={classes.title}
             color="inherit"
@@ -36,11 +40,18 @@ const NavBar = ({ totalItems }) => {
               marginLeft: "auto",
             }}
           >
-            <IconButton aria-label="show cart item" color="inherit">
-              <Badge badgeContent={totalItems} color="secondary">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
+            {location.pathname === "/" && (
+              <IconButton
+                component={Link}
+                to="/cart"
+                aria-label="show cart item"
+                color="inherit"
+              >
+                <Badge badgeContent={totalItems} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
+            )}
           </div>
         </Toolbar>
       </AppBar>
