@@ -17,6 +17,7 @@ const Cart = ({
   // const isEmpty = !cart.line_items;
   const classes = useStyles();
   console.log(cart);
+
   const EmptyCart = () => {
     <Typography variant="subtitle1">
       You have no items in your ShoppingCart.
@@ -63,27 +64,27 @@ const Cart = ({
       </div>
     </>;
   };
-  // if (!cart?.line_items)
-  //   return (
-  //     <>
-  //       <div
-  //         style={{
-  //           color: "red",
+  if (!cart?.line_items)
+    return (
+      <>
+        <div
+          style={{
+            color: "red",
 
-  //           margin: "400px",
-  //         }}
-  //       >
-  //         Loading...
-  //       </div>
-  //     </>
-  //   );
+            margin: "400px",
+          }}
+        >
+          Loading...
+        </div>
+      </>
+    );
   return (
     <Container>
       <div className={classes.toolbar} />
       <Typography className={classes.title} variant="h3" gutterBottom>
         Your Shopping Cart
       </Typography>
-      {/* {!cart.line_items ? <EmptyCart /> : <FilledCart />} */}
+      {!cart.line_items ? <EmptyCart /> : <FilledCart />}
       <Grid container spacing={3}>
         {cart?.line_items.map((item) => (
           <Grid item xs={12} sm={4} key={item.id}>
@@ -111,6 +112,8 @@ const Cart = ({
             Empty Cart
           </Button>
           <Button
+            component={Link}
+            to="/checkout"
             className={classes.checkoutBotton}
             size="large"
             type="button"

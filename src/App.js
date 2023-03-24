@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Route,  Routes } from 'react-router-dom';
 import './App.css';
 import Cart from './components/cart/Cart';
+import Checkout from './components/checkoutForm/checkout/Checkout';
 import NavBar from './components/products/Navabar/NavBar';
 import Products from './components/products/Products';
 import { commerce } from './lib/Commerce';
@@ -48,6 +49,7 @@ const fetchCart = () => {
 console.log(productId, quantity)
     const {cart} = await commerce.cart.update(productId, {quantity})
     // setCart(cart)
+             fetchCart()
 
     console.log(cart)
 
@@ -83,7 +85,8 @@ console.log(productId, quantity)
      onAddToCart={handleAddToCart } 
     //  refetch={fetchCart} 
       /> } />
-  
+       <Route path='/checkout' element= { <Checkout cart={cart} />} />
+
     </Routes> 
       </div>
   );
