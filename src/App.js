@@ -6,12 +6,18 @@ import './App.css';
 import Cart from './components/cart/Cart';
 import Checkout from './components/checkoutForm/checkout/Checkout';
 import NavBar from './components/products/Navabar/NavBar';
+import Product from './components/products/product/Product';
 import Products from './components/products/Products';
 import { commerce } from './lib/Commerce';
 
-function App() {
+function App(onSearch) {
   const [products, setProducts] = useState ([])
   const [cart, setCart] = useState({})
+  const [order, setOrder] =useState({})
+  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState("")
 // console.log("cart", cart)
   const fetchProducts = async () => {
     const {data} = await commerce.products.list()
@@ -64,6 +70,25 @@ console.log(productId, quantity)
   //   setCart(cart)
        fetchCart()
 }
+
+const refreshCart = async () => {
+const newCart = await commerce.cart.refresh()
+setCart(newCart)
+}
+
+
+const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+try {
+  const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder)
+  setOrder(incomingOrder)
+  refreshCart()
+} catch (error) {
+  setErrorMessage(error.data.error.message)
+}
+
+
+}
+
   useEffect (() => {
       fetchProducts()
        fetchCart()
@@ -71,12 +96,12 @@ console.log(productId, quantity)
 
   return (
     <div className="App">
-       <NavBar totalItems={cart?.total_items}/>
+       <NavBar totalItems={cart?.total_items}  Products={<Products />} setSearchQuery={setSearchQuery}   />
        
     <Routes>
     
      
-     <Route path='/' element= { <Products products={products} onAddToCart={handleAddToCart } />} />
+     <Route path='/' element= { <Products products={products} onAddToCart={handleAddToCart } searchQuery={searchQuery} />} />
      <Route path='/cart' element= { <Cart
       cart={cart}
       handleUpdateCartQty ={handleUpdateCartQty }
@@ -85,8 +110,19 @@ console.log(productId, quantity)
      onAddToCart={handleAddToCart } 
     //  refetch={fetchCart} 
       /> } />
-       <Route path='/checkout' element= { <Checkout cart={cart} />} />
-
+       <Route path='/checkout' element= { <Checkout cart={cart} order={order} onCaptureCheckOut={handleCaptureCheckout} error={errorMessage} />} />
+{/* 
+<Route
+  path="/checkout"
+  element={
+    <Checkout
+      cart={cart}
+      order={order}
+      onCaptureCheckOut={handleCaptureCheckout}
+      error={errorMessage}
+    />
+  }
+/>; */}
     </Routes> 
       </div>
   );

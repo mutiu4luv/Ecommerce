@@ -1,13 +1,33 @@
-import { AppBar, Badge, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Badge,
+  IconButton,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import navbar from "../../../assets/navbar.png";
 import React from "react";
 // import useStyles from "./styles";
 import { ShoppingCart } from "@mui/icons-material";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+// import Product from "../product/Product";
 
-const NavBar = ({ totalItems }) => {
+const NavBar = ({ totalItems, Products, setSearchQuery }) => {
   // const classes = useStyles();
+  const [search, setSearch] = useState("");
   const location = useLocation();
+  console.log(search);
+  const [query, setQuery] = useState("");
+
+  const handleInputChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  // const handleSearch = () => {
+  //   setSearchQuery(query);
+  // };
   return (
     <div>
       <AppBar
@@ -33,6 +53,18 @@ const NavBar = ({ totalItems }) => {
             />
             mutiu.js
           </Typography>
+          {/* <input type="text" placeholder="search..." className="search" /> */}
+
+          {/* <TextField
+            id="outlined-basic"
+            name="search"
+            label="search..."
+            variant="outlined"
+            style={{ marginLeft: "auto", marginRight: "auto" }}
+            // onChange={(e) => setSearch(e.target.value)}
+            onChange={handleInputChange}
+          /> */}
+          {/* <button onClick={handleSearch}>Search</button> */}
           {/* <div className={classes.grow} /> */}
           <div
             // className={classes.button}

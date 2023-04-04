@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   InputLabel,
   MenuItem,
@@ -10,8 +11,9 @@ import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CustomTextField from "./CustomTextField";
 import { commerce } from "../../lib/Commerce";
+import { Link } from "react-router-dom";
 
-const AddressForm = ({ checkoutToken }) => {
+const AddressForm = ({ checkoutToken, next }) => {
   const methods = useForm();
 
   const [shippingCountries, setShippingCountries] = useState([]);
@@ -88,104 +90,122 @@ const AddressForm = ({ checkoutToken }) => {
         shippingSubdivision
       );
   }, [shippingSubdivision]);
+  const submitHandler = (data) => {
+    console.log("data", data);
+    next({
+      ...data,
+      shippingCountry,
+      shippingSubdivision,
+      shippingOption,
+    });
+  };
 
   return (
     <>
       <Typography variant="h4" gutterBottom>
         Shipping Address
       </Typography>
-      <FormProvider {...methods}>
-        <form onSubmit="">
-          <Grid container spacing={3}>
-            {/* <CustomTextField required name="firstNmae" label="First Name" /> */}
-            <TextField
-              id="outlined-basic"
-              name="firstname"
-              label="First Name"
-              variant="outlined"
-              required
-            />
-            <TextField
-              id="outlined-basic"
-              name="lastname"
-              label="Last Name"
-              variant="outlined"
-              required
-            />
-            <TextField
-              id="outlined-basic"
-              name="address"
-              label="Address"
-              variant="outlined"
-              required
-            />
-            <TextField
-              id="outlined-basic"
-              name="email"
-              label="Email"
-              variant="outlined"
-              required
-            />
-            <TextField
-              id="outlined-basic"
-              name="city"
-              label="City"
-              variant="outlined"
-              required
-            />
-            <TextField
-              id="outlined-basic"
-              name="zip"
-              label="Zip / postal code"
-              variant="outlined"
-              required
-            />
+      {/* <FormProvider {...methods}> */}
+      <form onSubmit={submitHandler}>
+        <Grid container spacing={3}>
+          {/* <CustomTextField required name="firstNmae" label="First Name" /> */}
+          <TextField
+            id="outlined-basic"
+            name="firstname"
+            label="First Name"
+            variant="outlined"
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            name="lastname"
+            label="Last Name"
+            variant="outlined"
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            name="address"
+            label="Address"
+            variant="outlined"
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            name="email"
+            label="Email"
+            variant="outlined"
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            name="city"
+            label="City"
+            variant="outlined"
+            required
+          />
+          <TextField
+            id="outlined-basic"
+            name="zip"
+            label="Zip / postal code"
+            variant="outlined"
+            required
+          />
 
-            <Grid item xs={12} sm={6}>
-              <InputLabel>shipping Country</InputLabel>
-              <Select
-                value={shippingCountry}
-                fullWidth
-                onChange={(e) => setShippingCountry(e.target.value)}
-              >
-                {countries.map((country) => (
-                  <MenuItem key={country.id} value={country.id}>
-                    {country.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <InputLabel>shipping Subdivisions</InputLabel>
-              <Select
-                value={shippingSubdivision}
-                fullWidth
-                onChange={(e) => setShippingSubdivision(e.target.value)}
-              >
-                {subdivisions.map((subdivision) => (
-                  <MenuItem key={subdivision.id} value={subdivision.id}>
-                    {subdivision.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <InputLabel>shipping Options </InputLabel>
-              <Select
-                value={shippingOption}
-                fullWidth
-                onChange={(e) => setShippingOption(e.target.value)}
-              >
-                {options.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <InputLabel>shipping Country</InputLabel>
+            <Select
+              value={shippingCountry}
+              fullWidth
+              onChange={(e) => setShippingCountry(e.target.value)}
+            >
+              {countries.map((country) => (
+                <MenuItem key={country.id} value={country.id}>
+                  {country.label}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
-        </form>
-      </FormProvider>
+          <Grid item xs={12} sm={6}>
+            <InputLabel>shipping Subdivisions</InputLabel>
+            <Select
+              value={shippingSubdivision}
+              fullWidth
+              onChange={(e) => setShippingSubdivision(e.target.value)}
+            >
+              {subdivisions.map((subdivision) => (
+                <MenuItem key={subdivision.id} value={subdivision.id}>
+                  {subdivision.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <InputLabel>shipping Options </InputLabel>
+            <Select
+              value={shippingOption}
+              fullWidth
+              onChange={(e) => setShippingOption(e.target.value)}
+            >
+              {options.map((option) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+        </Grid>
+        <hr />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button variant="outlined" component={Link} to="/cart">
+            BACK TO CART
+          </Button>
+          <Button variant="contained " type="submit" color="primary">
+            NEXT
+          </Button>
+        </div>
+      </form>
+      {/* </FormProvider> */}
     </>
   );
 };
